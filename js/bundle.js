@@ -1,91 +1,107 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var nio = require('niojs');
-var d3 = require('d3');
 
-var prevAvg;
-var currentAvg;
-var counts = [];
-var sampleSize = 3;
-colors = {high: '#567238', middle: '#37A28A', low: '#76C6EB'};
+(function(){
 
-// add [sampleSize] data chunks and then compare
+  var nio = require('niojs');
+  var d3 = require('d3');
 
-nio.source.socketio(
-  'http://brand.nioinstances.com',
-  ['count_by_time']
-  ).pipe(nio.func(function (chunk) {
-    if (chunk.count_type === 'countpersec') {
-      counts.push(chunk.count_value);
+  window.initPulse = initPulse;
+
+  var prevAvg;
+  var currentAvg;
+  var counts = [];
+  var sampleSize = 3;
+
+  function initPulse (colors) {
+    console.log("** pulse initiated **");
+
+    nio.source.socketio(
+    'http://brand.nioinstances.com',
+    ['count_by_time']
+    ).pipe(nio.func(grabCounts));
+
+    var time = sampleSize*1000;  
+    
+    setInterval(function() {
+    if (counts.length > sampleSize) {
+      var color = runColorPicker();
+    } else {
+      var color = '#bbb';
     }
-  }));
- 
-
-setInterval(function() {
-  if (counts.length > sampleSize) {
-    var color = runColorPicker();
-  } else {
-    var color = '#bbb';
+    d3.select("circle")
+      .transition()
+        .duration(time*0.33)
+          .style("fill", d3.hcl(color))
+      .transition()
+        .duration(time*0.66)
+        .style("fill", function() {
+          var that = d3.select(this),
+              fill0 = that.style("fill"),
+              fill1 = that.style("fill", null).style("fill");
+          that.style("fill", fill0);
+          return fill1;
+        });
+    }, time);  
   }
-  d3.select("circle")
-    .transition()
-      .duration(800)
-        .style("fill", d3.hcl(color))
-    .transition()
-      .duration(2200)
-      .style("fill", function() {
-        var that = d3.select(this),
-            fill0 = that.style("fill"),
-            fill1 = that.style("fill", null).style("fill");
-        that.style("fill", fill0);
-        return fill1;
+
+
+
+  function grabCounts (chunk) {
+    if (chunk.count_type === 'countpersec') {
+        counts.push(chunk.count_value);
+    }
+  }
+
+
+   
+
+
+  function runColorPicker () {
+    console.log("counts", counts);
+    averagePerSecCount();
+    var diff = calcDifference();
+    var color = determineColor(diff, colors);
+    return color;
+  }
+
+
+  function averagePerSecCount () {    
+    var l = counts.length || 0;
+    if (l >= sampleSize) {
+      var sample = counts.slice(0, sampleSize);
+      var total = sample.reduce(function(prev, curr){
+        return prev + curr;
       });
-}, 3000);  
-
-
-function runColorPicker () {
-  averagePerSecCount(counts, sampleSize);
-  var diff = calcDifference();
-  var color = determineColor(diff, colors);
-  return color;
-}
-
-
-function averagePerSecCount (counts, sampleSize) {
-  var l = counts.length || 0;
-  if (l >= sampleSize) {
-    var sample = counts.slice(0, sampleSize);
-    var total = sample.reduce(function(prev, curr){
-      return prev + curr;
-    });
-    counts.splice(0, sampleSize);
-    var avg = Math.round(total/sampleSize);
-    currentAvg = avg;
+      counts.splice(0, sampleSize);
+      var avg = Math.round(total/sampleSize);
+      currentAvg = avg;
+    }
   }
-};
 
 
-function determineColor (diff, colors) {
-  if (diff > 5) {
-    return colors.high;
-  } else if (diff < -5) {
-    return colors.low;
-  } else {
-    return colors.middle;
+  function determineColor (diff, colors) {
+    if (diff > 5) {
+      return colors.high;
+    } else if (diff < -5) {
+      return colors.low;
+    } else {
+      return colors.middle;
+    }
   }
-};
 
 
-function calcDifference () {
-  if ( !prevAvg ) { 
+  function calcDifference () {
+    if ( !prevAvg ) { 
+      prevAvg = currentAvg;
+      return;
+    }
+    var diff = prevAvg - currentAvg;
     prevAvg = currentAvg;
-    return;
+    return Math.round(diff);
   }
-  var diff = prevAvg - currentAvg;
-  prevAvg = currentAvg;
-  return Math.round(diff);
-};
 
 
+})();
 
 },{"d3":2,"niojs":7}],2:[function(require,module,exports){
 !function() {
