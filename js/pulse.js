@@ -9,7 +9,7 @@
   var prevAvg;
   var currentAvg;
   var counts = [];
-  var sampleSize = 3.3;
+  var sampleSize = 3;
 
   function initPulse (colors) {
     console.log("** pulse initiated **");
@@ -29,10 +29,10 @@
     }
     d3.select("circle")
       .transition()
-        .duration(time*0.33)
+        .duration(time*0.5)
           .style("fill", d3.hcl(color))
       .transition()
-        .duration(time*0.66)
+        .duration(time*0.6)
         .style("fill", function() {
           var that = d3.select(this),
               fill0 = that.style("fill"),
