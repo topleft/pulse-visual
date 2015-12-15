@@ -15,7 +15,7 @@
   var sampleSize = 3;
 
   function initPulse (colors) {
-    console.log("** pulse initiated **");
+    console.log( "** pulse initiated **" );
 
     nio.source.socketio(
     'http://brand.nioinstances.com',
@@ -24,8 +24,8 @@
 
     var time = sampleSize*1000;  
     
-    setInterval(function() {
-    if (counts.length > sampleSize) {
+    setInterval( function () {
+    if ( counts.length > sampleSize ) {
       var color = runColorPicker();
     } else {
       var color = '#D4B14C';
@@ -36,8 +36,8 @@
           .style("fill", d3.hcl(color))
       .transition()
         .duration(time*0.6)
-        .style("fill", function() {
-          var that = d3.select(this),
+          .style("fill", function () {
+            var that = d3.select(this),
               fill0 = that.style("fill"),
               fill1 = that.style("fill", null).style("fill");
           that.style("fill", fill0);
@@ -48,7 +48,7 @@
 
 
   function grabCounts (chunk) {
-    if (chunk.count_type === 'countpersec') {
+    if ( chunk.count_type === 'countpersec' ) {
         counts.push(chunk.count_value);
     }
   }  
@@ -64,24 +64,13 @@
 
   function averagePerSecCount () {    
     var l = counts.length || 0;
-    if (l >= sampleSize) {
+    if ( l >= sampleSize ) {
       var sample = counts.splice(0, sampleSize);
       var total = sample.reduce(function(prev, curr){
         return prev + curr;
       });
       var avg = Math.round(total/sampleSize);
       currentAvg = avg;
-    }
-  }
-
-
-  function determineColor (diff, colors) {
-    if (diff > 5) {
-      return colors.high;
-    } else if (diff < -5) {
-      return colors.low;
-    } else {
-      return colors.middle;
     }
   }
 
@@ -96,6 +85,17 @@
     $('#data span')
         .html(Math.round(diff));
     return Math.round(diff);
+  }
+
+
+  function determineColor (diff, colors) {
+    if ( diff > 5 ) {
+      return colors.high;
+    } else if ( diff < -5 ) {
+      return colors.low;
+    } else {
+      return colors.middle;
+    }
   }
 
 

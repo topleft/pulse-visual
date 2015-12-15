@@ -58,6 +58,10 @@ circle {
   margin-right: 40px;
 }
 
+.data-box {
+  height: 500px;
+}
+
 .big-font {
   font-size: 300px;
 }
@@ -66,7 +70,4 @@ circle {
   font-size: 20px;
 }
 
-.data-box {
-  height: 500px;
-}
 

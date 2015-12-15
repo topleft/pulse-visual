@@ -35,8 +35,8 @@
           .style("fill", d3.hcl(color))
       .transition()
         .duration(time*0.6)
-        .style("fill", function () {
-          var that = d3.select(this),
+          .style("fill", function () {
+            var that = d3.select(this),
               fill0 = that.style("fill"),
               fill1 = that.style("fill", null).style("fill");
           that.style("fill", fill0);
@@ -74,17 +74,6 @@
   }
 
 
-  function determineColor (diff, colors) {
-    if ( diff > 5 ) {
-      return colors.high;
-    } else if ( diff < -5 ) {
-      return colors.low;
-    } else {
-      return colors.middle;
-    }
-  }
-
-
   function calcDifference () {
     if ( !prevAvg ) { 
       prevAvg = currentAvg;
@@ -95,6 +84,17 @@
     $('#data span')
         .html(Math.round(diff));
     return Math.round(diff);
+  }
+
+
+  function determineColor (diff, colors) {
+    if ( diff > 5 ) {
+      return colors.high;
+    } else if ( diff < -5 ) {
+      return colors.low;
+    } else {
+      return colors.middle;
+    }
   }
 
 
