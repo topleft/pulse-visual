@@ -55,7 +55,6 @@
 
 
   function runColorPicker () {
-    console.log("counts", counts);
     averagePerSecCount();
     var diff = calcDifference();
     var color = determineColor(diff, colors);
@@ -66,11 +65,10 @@
   function averagePerSecCount () {    
     var l = counts.length || 0;
     if (l >= sampleSize) {
-      var sample = counts.slice(0, sampleSize);
+      var sample = counts.splice(0, sampleSize);
       var total = sample.reduce(function(prev, curr){
         return prev + curr;
       });
-      counts.splice(0, sampleSize);
       var avg = Math.round(total/sampleSize);
       currentAvg = avg;
     }
