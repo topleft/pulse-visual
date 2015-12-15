@@ -9,7 +9,7 @@
   var prevAvg;
   var currentAvg;
   var counts = [];
-  var sampleSize = 3;
+  var sampleSize = 3.3;
 
   function initPulse (colors) {
     console.log("** pulse initiated **");
@@ -25,7 +25,7 @@
     if (counts.length > sampleSize) {
       var color = runColorPicker();
     } else {
-      var color = '#bbb';
+      var color = '#D4B14C';
     }
     d3.select("circle")
       .transition()
@@ -96,6 +96,8 @@
     }
     var diff = prevAvg - currentAvg;
     prevAvg = currentAvg;
+    $('#data span')
+        .html(Math.round(diff));
     return Math.round(diff);
   }
 
