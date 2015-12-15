@@ -1,6 +1,8 @@
 
 (function(){
 
+  'use strict';
+
   var nio = require('niojs');
   var d3 = require('d3');
 
@@ -44,19 +46,14 @@
   }
 
 
-
   function grabCounts (chunk) {
     if (chunk.count_type === 'countpersec') {
         counts.push(chunk.count_value);
     }
-  }
-
-
-   
+  }  
 
 
   function runColorPicker () {
-    console.log("counts", counts);
     averagePerSecCount();
     var diff = calcDifference();
     var color = determineColor(diff, colors);

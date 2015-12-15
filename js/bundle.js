@@ -2,6 +2,8 @@
 
 (function(){
 
+  'use strict';
+
   var nio = require('niojs');
   var d3 = require('d3');
 
@@ -45,15 +47,11 @@
   }
 
 
-
   function grabCounts (chunk) {
     if (chunk.count_type === 'countpersec') {
         counts.push(chunk.count_value);
     }
-  }
-
-
-   
+  }  
 
 
   function runColorPicker () {
