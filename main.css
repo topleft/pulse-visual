@@ -1,5 +1,72 @@
 
 
+.headline {
+  text-align: right;
+  margin-left: 500px;
+}
+
+li  {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+span.key {
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+#low {
+  background-color: #552B23;
+}
+
+#middle {
+  background-color: #D4B14C;
+}
+
+#high {
+  background-color: #427244;
+}
+
 circle {
   fill: #fff;
 }
+
+#circle {
+  float: right;
+  margin-right: 100px;
+}
+
+#data {
+  display: table-cell;
+  width: 500px;
+  float: left;
+  margin-left: 20px;
+  color: #bbb;
+}
+
+#data span {
+  text-align: right;
+  vertical-align: middle;
+  display: block;
+}
+
+#data p {
+  text-align: right;
+  margin-top: -80px;
+  margin-right: 40px;
+}
+
+.big-font {
+  font-size: 300px;
+}
+
+.small-font {
+  font-size: 20px;
+}
+
+.data-box {
+  height: 500px;
+}
+

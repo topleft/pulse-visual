@@ -2,21 +2,42 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Heartbeat - Visual Pulse</title>
+    <title>Data Pulse</title>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="./main.css">
   </head>
   <body>
 
     <div class="container">
-
-      <h1>Heartbeat</h1>
-      <p>Visual Pulse</p>
-
-      <svg width="960" height="500">
-        <circle cx="480" cy="250" r="200"/>
-      </svg>
-
+      <div class="headline">
+        <h1>Data Pulse</h1>
+        <br/>
+        <p>Visual Pulse keeps track of a stream of information. It enables you to get a sense of the state of your data by setting colors representing different conditions.</p>
+        <p>In this case we are calculating the average amount of social media information, streaming in every 3 seconds, and comparing it to the previous 3 seconds. The difference of information streamed is represented by the pulse and color.</p>
+        <ul>
+          <li>
+            <span> less than -5 </span><span class="key" id="low"></span>
+          </li>
+          <li>
+            <span> -5 to 5 </span><span class="key" id="middle"></span>  
+          </li>  
+          <li>
+            </span><span> greater than 5 </span><span class="key" id="high">  
+          </li>
+        </ul>
+      </div>
+      
+      <div class="data-box">
+        <div id="data">
+          <span class="big-font">0</span>
+          <p class="small-font">difference</p>
+        </div>
+        <div id="circle">
+          <svg width="500" height="500">
+            <circle cx="280" cy="250" r="200"/>
+          </svg>
+        </div>
+      </div>
     </div>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
